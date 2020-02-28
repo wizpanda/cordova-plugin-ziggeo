@@ -1,0 +1,17 @@
+{
+    "name": "cordova-plugin-ziggeo",
+    "version": "0.0.1",
+    "description": "",
+    "cordova": {
+        "id": "cordova-plugin-ziggeo",
+        "platforms": [
+            "android"
+        ]
+    },
+    "keywords": [
+        "ecosystem:cordova",
+        "cordova-ios",
+        "cordova-android"
+    ],
+    "author": "Shashank Agrawal"
+}
