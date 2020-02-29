@@ -32,6 +32,8 @@
             <activity android:name="com.ziggeo.CameraFullscreenRecorderActivity"/>
         </config-file>
 
+        <resource-file src="src/android/styles.xml" target="res/values/styles.xml"/>
+
         <source-file src="src/android/com/ziggeo/ZiggeoCordovaPlugin.java" target-dir="src/com/ziggeo"/>
         <source-file src="src/android/com/ziggeo/CameraFullscreenRecorderActivity.java" target-dir="src/com/ziggeo"/>
     </platform>

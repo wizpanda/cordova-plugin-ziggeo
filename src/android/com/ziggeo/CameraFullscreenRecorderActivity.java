@@ -35,8 +35,6 @@ public class CameraFullscreenRecorderActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        super.onCreate(savedInstanceState);
-
         Intent intent = getIntent();
         String appToken = intent.getStringExtra(INTENT_API_TOKEN);
         HashMap options = (HashMap) intent.getSerializableExtra(INTENT_OPTIONS);
@@ -45,7 +43,7 @@ public class CameraFullscreenRecorderActivity extends AppCompatActivity {
     }
 
     public void start(String appToken, HashMap options) {
-        ziggeo = new Ziggeo(appToken, this);
+        ziggeo = new Ziggeo(appToken, CameraFullscreenRecorderActivity.this);
 
         RecorderConfig config = getConfig(options);
 

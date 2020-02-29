@@ -36,21 +36,12 @@ public class ZiggeoCordovaPlugin extends CordovaPlugin {
     }
 
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
+    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         Log.i(TAG, "Execute called");
         this.callbackContext = callbackContext;
 
         if (action.equals("startFullScreenRecorder")) {
-            this.cordova.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        startFullScreenRecorder(args);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            startFullScreenRecorder(args);
 
             return true;
         }
@@ -68,7 +59,6 @@ public class ZiggeoCordovaPlugin extends CordovaPlugin {
         intent.putExtra(CameraFullscreenRecorderActivity.INTENT_API_TOKEN, apiToken);
 
         cordova.startActivityForResult(this, intent, 0);
-
     }
 
     @Override
