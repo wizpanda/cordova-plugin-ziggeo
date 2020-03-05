@@ -50,7 +50,8 @@ public class ZiggeoCordovaPlugin extends CordovaPlugin {
         }
 
         if (action.equals("destroyRecorder")) {
-            CameraFullscreenRecorder.destroy();
+            CameraFullscreenRecorder.destroy(callbackContext);
+            return true;
         }
 
         return false;

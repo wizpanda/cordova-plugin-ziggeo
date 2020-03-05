@@ -32,8 +32,8 @@ public class CameraFullscreenRecorder {
 
     // Keep a reference to these classes for any cleanup and destroyment later.
     private static Ziggeo ziggeo;
-    private static CallbackContext callbackContext;
 
+    private CallbackContext callbackContext;
     private Context context;
 
     CameraFullscreenRecorder(Context context, CallbackContext callbackContext) {
@@ -42,8 +42,7 @@ public class CameraFullscreenRecorder {
     }
 
     public void start(String appToken, JSONObject options) throws JSONException {
-        // Make sure to cleanup any previous Ziggeo recorder instance
-        destroy();
+        destroy(null);
         ziggeo = new Ziggeo(appToken, context);
 
         RecorderConfig config = getConfig(options);
@@ -56,7 +55,7 @@ public class CameraFullscreenRecorder {
      * Cleanup and destroy any previous instance of {@link Ziggeo} to prevent memory leaks and
      * save resources.
      */
-    public static void destroy() {
+    public static void destroy(CallbackContext callbackContext) {
         if (ziggeo != null) {
             ziggeo.clearRecorded();
             ziggeo = null;
@@ -65,11 +64,9 @@ public class CameraFullscreenRecorder {
         if (callbackContext != null) {
             String message = "Ziggeo Recorder Destroyed";
 
-            // Close the last callback bridge
             PluginResult result = new PluginResult(PluginResult.Status.OK, message);
             result.setKeepCallback(false);
             callbackContext.sendPluginResult(result);
-            callbackContext = null;
         }
     }
 
