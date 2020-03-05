@@ -1,49 +1,40 @@
 package com.ziggeo;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import com.ziggeo.androidsdk.Ziggeo;
 import com.ziggeo.androidsdk.callbacks.IRecorderCallback;
 import com.ziggeo.androidsdk.callbacks.RecorderCallback;
 import com.ziggeo.androidsdk.recorder.MicSoundLevel;
 import com.ziggeo.androidsdk.recorder.RecorderConfig;
 import com.ziggeo.androidsdk.widgets.cameraview.CameraView;
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.PluginResult;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CameraFullscreenRecorderActivity extends AppCompatActivity {
+public class CameraFullscreenRecorder {
 
     private static final String OPTION_TIME_LIMIT = "timelimit";
     private static final String OPTION_AUTO_RECORD = "autorecord";
     private static final String OPTION_CAMERA_FACING = "facing";
 
-    static final String ACTION_EXIT = "ACTION_JOURNEY_EXIT";
-    static final String EXTRA_RESULT = "EXTRA_RESULT";
-    static final String EXTRA_RESULT_SUCCESS = "EXTRA_RESULT_SUCCESS";
-
-    public static final String INTENT_API_TOKEN = "ziggeo-api-token";
-    public static final String INTENT_OPTIONS = "ziggeo-options";
-
     private Ziggeo ziggeo;
+    private Context context;
+    private CallbackContext callbackContext;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Intent intent = getIntent();
-        String appToken = intent.getStringExtra(INTENT_API_TOKEN);
-        HashMap options = (HashMap) intent.getSerializableExtra(INTENT_OPTIONS);
-
-        start(appToken, options);
+    CameraFullscreenRecorder(Context context, CallbackContext callbackContext) {
+        this.context = context;
+        this.callbackContext = callbackContext;
     }
 
-    public void start(String appToken, HashMap options) {
-        ziggeo = new Ziggeo(appToken, CameraFullscreenRecorderActivity.this);
+    public void start(String appToken, JSONObject options) throws JSONException {
+        ziggeo = new Ziggeo(appToken, context);
 
         RecorderConfig config = getConfig(options);
 
@@ -51,15 +42,15 @@ public class CameraFullscreenRecorderActivity extends AppCompatActivity {
         ziggeo.startCameraRecorder();
     }
 
-    private RecorderConfig getConfig(HashMap options) {
+    private RecorderConfig getConfig(JSONObject options) throws JSONException {
 
         RecorderConfig.Builder builder = new RecorderConfig.Builder()
                 .callback(prepareCallback())
                 .sendImmediately(false)
                 .enableCoverShot(false);
 
-        if (options.containsKey(OPTION_CAMERA_FACING)) {
-            int facing = (int) options.get(OPTION_CAMERA_FACING);
+        if (options.has(OPTION_CAMERA_FACING)) {
+            int facing = options.getInt(OPTION_CAMERA_FACING);
 
             if (facing == 1) {
                 builder.facing(CameraView.FACING_FRONT);
@@ -68,33 +59,31 @@ public class CameraFullscreenRecorderActivity extends AppCompatActivity {
             }
         }
 
-        if (options.containsKey(OPTION_AUTO_RECORD)) {
-            builder.autostartRecording((boolean) options.get(OPTION_AUTO_RECORD));
+        if (options.has(OPTION_AUTO_RECORD)) {
+            builder.autostartRecording(options.getBoolean(OPTION_AUTO_RECORD));
         }
 
-        if (options.containsKey(OPTION_TIME_LIMIT)) {
-            int seconds = (int) options.get(OPTION_TIME_LIMIT);
-            builder.maxDuration(seconds * 1000);
+        if (options.has(OPTION_TIME_LIMIT)) {
+            builder.maxDuration(options.getInt(OPTION_TIME_LIMIT) * 1000);
         }
 
         return builder.build();
     }
 
-    private void sendResult(String eventName, HashMap<String, Object> extra) {
-        if (extra == null) {
-            extra = new HashMap<>();
+    private void sendResult(String eventName, Map eventData) {
+        JSONObject message = new JSONObject();
+
+        try {
+            message.put("eventName", eventName);
+            if (eventData != null) {
+                message.put("eventData", eventData);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        extra.put("eventName", eventName);
-
-        Intent intent = new Intent();
-
-        intent.putExtra(EXTRA_RESULT, extra);
-        intent.putExtra(EXTRA_RESULT_SUCCESS, true);
-        intent.setAction(ACTION_EXIT);
-
-        setResult(RESULT_OK, intent);
-        //finish();
+        PluginResult result = new PluginResult(PluginResult.Status.OK, message);
+        this.callbackContext.sendPluginResult(result);
     }
 
     private IRecorderCallback prepareCallback() {
