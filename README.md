@@ -15,19 +15,25 @@ cordova plugin add cordova-plugin-ziggeo
 
 ## Fullscreen Recorder
 
-Make sure all the below code is invoked after Cordova's `deviceready` event is fired.
-
 ### Options
+
+We have tried to match the options with JavaScript SDK https://ziggeo.com/docs/sdks/javascript/browser-integration/parameters#javascript-revision=stable&javascript-version=v2
+so that developers can pretty much use the same options in their web-apps.
+
 
 | Name             | Type             | Required         | Default          |
 |------------------|------------------|------------------|------------------|
 | `facing`         | number             | No             | Back Camera      |
 | `timelimit`      | number             | No             | Unlimited      |
 
+TODO Complete this
+
+### Usage
+
 ```javascript
 const options = {
-    facing: 1,                    // Optional: 1 for front camera, 2 for back camera
-    timelimit: 20,                // Optional: Maximum time limit allowed
+    facing: 1,
+    timelimit: 20,
     autorecord: true,
     manualsubmit: false,
     disableCameraSwitch: true,
@@ -36,6 +42,8 @@ const options = {
         foo: 'bar'
     }
 };
+
+// Make sure the below code is invoked after Cordova's `deviceready` event is fired.
 
 cordova.plugins.Ziggeo.startFullScreenRecorder("my-ziggeo-token", options, (data) => {
     console.log(data);
