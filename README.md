@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/cordova-plugin-ziggeo.svg)](https://badge.fury.io/js/cordova-plugin-ziggeo)
+
 # Cordova Plugin For [Ziggeo](https://ziggeo.com/) SDKs (Unofficial)
 
 Ziggeo API allows you to integrate video recording and playback with only two lines of code in your site, service or app.
