@@ -17,6 +17,19 @@ cordova plugin add cordova-plugin-ziggeo
 
 ## Fullscreen Recorder
 
+### Using AppCompat theme
+
+Ziggeo Android SDK requires `Theme.AppCompat` or its descendants as an application theme. So you need to use if you are not adding other
+ theme. For this, add the following lines in your `config.xml`:
+
+```xml
+<edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+    <application android:theme="@style/ZiggeoTheme" />
+</edit-config>
+```
+
+You can also customize theme if you want. For that, refer the `styles.xml` file here.
+
 ### Options
 
 We have tried to match the options with JavaScript SDK https://ziggeo.com/docs/sdks/javascript/browser-integration/parameters#javascript-revision=stable&javascript-version=v2
