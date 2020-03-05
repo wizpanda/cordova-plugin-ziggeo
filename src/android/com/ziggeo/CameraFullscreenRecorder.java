@@ -7,6 +7,7 @@ import com.ziggeo.androidsdk.callbacks.IRecorderCallback;
 import com.ziggeo.androidsdk.callbacks.RecorderCallback;
 import com.ziggeo.androidsdk.recorder.MicSoundLevel;
 import com.ziggeo.androidsdk.recorder.RecorderConfig;
+import com.ziggeo.androidsdk.ui.theming.CameraRecorderStyle;
 import com.ziggeo.androidsdk.widgets.cameraview.CameraView;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
@@ -27,13 +28,14 @@ import java.util.Map;
  */
 public class CameraFullscreenRecorder {
 
-    private static final String OPTION_TIME_LIMIT = "timelimit";
-    private static final String OPTION_AUTO_RECORD = "autorecord";
+    private static final String OPTION_TIME_LIMIT = "timeLimit";
+    private static final String OPTION_AUTO_RECORD = "autoRecord";
     private static final String OPTION_CAMERA_FACING = "facing";
-    private static final String OPTION_MANUAL_SUBMIT = "manualsubmit";
+    private static final String OPTION_MANUAL_SUBMIT = "manualSubmit";
     private static final String OPTION_DISABLE_SWITCH = "disableCameraSwitch";
     private static final String OPTION_START_DELAY = "countdown";       // In seconds
     private static final String OPTION_EXTRA_DATA = "customData";
+    private static final String OPTION_HIDE_CONTROL = "hideControl";
 
     // Keep a reference to these classes for any cleanup and destroying later.
     private static Ziggeo ziggeo;
@@ -113,6 +115,14 @@ public class CameraFullscreenRecorder {
             builder.startDelay(options.getInt(OPTION_START_DELAY));
         } else {
             builder.startDelay(3);      // In seconds
+        }
+
+        if (options.has(OPTION_HIDE_CONTROL) && options.getBoolean(OPTION_HIDE_CONTROL)) {
+            CameraRecorderStyle style = new CameraRecorderStyle.Builder()
+                    .hideControls(true)
+                    .build();
+
+            builder.style(style);
         }
 
         if (options.has(OPTION_EXTRA_DATA)) {

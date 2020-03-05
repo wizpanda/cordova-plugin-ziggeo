@@ -23,10 +23,12 @@ We have tried to match the options with JavaScript SDK https://ziggeo.com/docs/s
 so that developers can pretty much use the same options in their web-apps.
 
 
-| Name             | Type             | Required         | Default          |
-|------------------|------------------|------------------|------------------|
-| `facing`         | number             | No             | Back Camera      |
-| `timelimit`      | number             | No             | Unlimited      |
+| Name             | Type             | Required         | Default              | Description                                   |
+|------------------|------------------|------------------|----------------------|-----------------------------------------------|
+| `facing`         | number             | No             | Back Camera          | Which camera to use, front or back.           |
+| `timeLimit`      | number             | No             | Unlimited            | Maximum time allowed for recording.           |
+| `autoRecord`     | boolean            | No             | `false`              | Should auto start the recording immediately.  |
+| `hideControl`    | boolean            | No             | `true` i.e. Visible  | Whether to hide the controls.                 |
 
 TODO Complete this
 
@@ -35,9 +37,9 @@ TODO Complete this
 ```javascript
 const options = {
     facing: 1,
-    timelimit: 20,
-    autorecord: true,
-    manualsubmit: false,
+    timeLimit: 20,
+    autoRecord: true,
+    manualSubmit: false,
     disableCameraSwitch: true,
     countdown: 5,
     customData: {
