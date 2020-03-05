@@ -18,7 +18,6 @@ import org.json.JSONObject;
 public class ZiggeoCordovaPlugin extends CordovaPlugin {
 
     private Context context;
-    private CallbackContext callbackContext;
     private static final String TAG = "ZiggeoCordovaPlugin";
 
     public ZiggeoCordovaPlugin() {
@@ -34,25 +33,30 @@ public class ZiggeoCordovaPlugin extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         Log.i(TAG, "Execute called");
-        this.callbackContext = callbackContext;
 
         if (action.equals("startFullScreenRecorder")) {
             this.cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        startFullScreenRecorder(args);
+                        startFullScreenRecorder(args, callbackContext);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             });
+
             return true;
         }
+
+        if (action.equals("destroyRecorder")) {
+            CameraFullscreenRecorder.destroy();
+        }
+
         return false;
     }
 
-    private void startFullScreenRecorder(JSONArray args) throws JSONException {
+    private void startFullScreenRecorder(JSONArray args, CallbackContext callbackContext) throws JSONException {
         String apiToken = args.getString(0);
         JSONObject options = args.getJSONObject(1);
 

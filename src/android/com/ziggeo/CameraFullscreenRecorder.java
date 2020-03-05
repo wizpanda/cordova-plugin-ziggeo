@@ -18,15 +18,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class which parses the options received from JS layer and launches the full screen Ziggeo
+ * recorder.
+ *
+ * @author Shashank Agrawal
+ */
 public class CameraFullscreenRecorder {
 
     private static final String OPTION_TIME_LIMIT = "timelimit";
     private static final String OPTION_AUTO_RECORD = "autorecord";
     private static final String OPTION_CAMERA_FACING = "facing";
 
-    private Ziggeo ziggeo;
+    // Keep a reference to these classes for any cleanup and destroyment later.
+    private static Ziggeo ziggeo;
+    private static CallbackContext callbackContext;
+
     private Context context;
-    private CallbackContext callbackContext;
 
     CameraFullscreenRecorder(Context context, CallbackContext callbackContext) {
         this.context = context;
@@ -34,12 +42,35 @@ public class CameraFullscreenRecorder {
     }
 
     public void start(String appToken, JSONObject options) throws JSONException {
+        // Make sure to cleanup any previous Ziggeo recorder instance
+        destroy();
         ziggeo = new Ziggeo(appToken, context);
 
         RecorderConfig config = getConfig(options);
 
         ziggeo.setRecorderConfig(config);
         ziggeo.startCameraRecorder();
+    }
+
+    /**
+     * Cleanup and destroy any previous instance of {@link Ziggeo} to prevent memory leaks and
+     * save resources.
+     */
+    public static void destroy() {
+        if (ziggeo != null) {
+            ziggeo.clearRecorded();
+            ziggeo = null;
+        }
+
+        if (callbackContext != null) {
+            String message = "Ziggeo Recorder Destroyed";
+
+            // Close the last callback bridge
+            PluginResult result = new PluginResult(PluginResult.Status.OK, message);
+            result.setKeepCallback(false);
+            callbackContext.sendPluginResult(result);
+            callbackContext = null;
+        }
     }
 
     private RecorderConfig getConfig(JSONObject options) throws JSONException {
@@ -70,19 +101,26 @@ public class CameraFullscreenRecorder {
         return builder.build();
     }
 
+    /**
+     * Send result to the JS layer.
+     * @param eventName Name of the Ziggeo event.
+     * @param eventData Any data to pass on along with the event.
+     */
     private void sendResult(String eventName, Map eventData) {
-        JSONObject message = new JSONObject();
+        if (eventData == null) {
+            eventData = new HashMap<>();
+        }
+
+        JSONObject message = new JSONObject(eventData);
 
         try {
-            message.put("eventName", eventName);
-            if (eventData != null) {
-                message.put("eventData", eventData);
-            }
+            message.put("ziggeoEvent", eventName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         PluginResult result = new PluginResult(PluginResult.Status.OK, message);
+        result.setKeepCallback(true);
         this.callbackContext.sendPluginResult(result);
     }
 
