@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +30,12 @@ public class CameraFullscreenRecorder {
     private static final String OPTION_TIME_LIMIT = "timelimit";
     private static final String OPTION_AUTO_RECORD = "autorecord";
     private static final String OPTION_CAMERA_FACING = "facing";
+    private static final String OPTION_MANUAL_SUBMIT = "manualsubmit";
+    private static final String OPTION_DISABLE_SWITCH = "disableCameraSwitch";
+    private static final String OPTION_START_DELAY = "countdown";       // In seconds
+    private static final String OPTION_EXTRA_DATA = "customData";
 
-    // Keep a reference to these classes for any cleanup and destroyment later.
+    // Keep a reference to these classes for any cleanup and destroying later.
     private static Ziggeo ziggeo;
 
     private CallbackContext callbackContext;
@@ -74,7 +79,6 @@ public class CameraFullscreenRecorder {
 
         RecorderConfig.Builder builder = new RecorderConfig.Builder()
                 .callback(prepareCallback())
-                .sendImmediately(false)
                 .enableCoverShot(false);
 
         if (options.has(OPTION_CAMERA_FACING)) {
@@ -95,11 +99,42 @@ public class CameraFullscreenRecorder {
             builder.maxDuration(options.getInt(OPTION_TIME_LIMIT) * 1000);
         }
 
+        if (options.has(OPTION_MANUAL_SUBMIT)) {
+            builder.sendImmediately(!options.getBoolean(OPTION_MANUAL_SUBMIT));
+        } else {
+            builder.sendImmediately(false);
+        }
+
+        if (options.has(OPTION_DISABLE_SWITCH)) {
+            builder.disableCameraSwitch(options.getBoolean(OPTION_DISABLE_SWITCH));
+        }
+
+        if (options.has(OPTION_START_DELAY)) {
+            builder.startDelay(options.getInt(OPTION_START_DELAY));
+        } else {
+            builder.startDelay(3);      // In seconds
+        }
+
+        if (options.has(OPTION_EXTRA_DATA)) {
+            HashMap<String, String> extra = new HashMap<>();
+
+            JSONObject customData = (JSONObject) options.get(OPTION_EXTRA_DATA);
+            Iterator<String> iterator = customData.keys();
+
+            while (iterator.hasNext()) {
+                String name = iterator.next();
+                extra.put(name, customData.get(name).toString());
+            }
+
+            builder.extraArgs(extra);
+        }
+
         return builder.build();
     }
 
     /**
      * Send result to the JS layer.
+     *
      * @param eventName Name of the Ziggeo event.
      * @param eventData Any data to pass on along with the event.
      */
