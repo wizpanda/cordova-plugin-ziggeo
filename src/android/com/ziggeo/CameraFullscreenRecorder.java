@@ -37,6 +37,7 @@ public class CameraFullscreenRecorder {
     private static final String OPTION_DISABLE_SWITCH = "disableCameraSwitch";
     private static final String OPTION_START_DELAY = "countdown";       // In seconds
     private static final String OPTION_CUSTOM_DATA = "customData";
+    private static final String OPTION_DATA_TITLE = "title";
     private static final String OPTION_HIDE_CONTROL = "hideControl";
 
     // Keep a reference to these classes for any cleanup and destroying later.
@@ -134,6 +135,10 @@ public class CameraFullscreenRecorder {
         if (options.has(OPTION_CUSTOM_DATA)) {
             JSONObject customData = (JSONObject) options.get(OPTION_CUSTOM_DATA);
             extra.put("data", customData.toString());
+        }
+
+        if (options.has(OPTION_DATA_TITLE)) {
+            extra.put("title", options.getString(OPTION_DATA_TITLE));
         }
 
         if (extra.size() > 0) {
