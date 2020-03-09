@@ -1,6 +1,6 @@
 {
     "name": "cordova-plugin-ziggeo",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Cordova wrapper around Ziggeo's native SDKs",
     "scripts": {
         "version": "node ./bump-version.js && git add plugin.xml",
