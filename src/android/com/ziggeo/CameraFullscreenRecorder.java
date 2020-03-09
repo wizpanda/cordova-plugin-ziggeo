@@ -224,6 +224,8 @@ public class CameraFullscreenRecorder {
 
                 HashMap<String, Object> data = new HashMap<>();
                 data.put("videoToken", videoToken);
+                data.put("uploaded", uploaded);
+                data.put("total", total);
 
                 sendResult("upload_progress", data);
             }
