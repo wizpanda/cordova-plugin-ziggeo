@@ -2,6 +2,7 @@ package com.ziggeo;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import com.ziggeo.androidsdk.Ziggeo;
 import com.ziggeo.androidsdk.callbacks.IRecorderCallback;
 import com.ziggeo.androidsdk.callbacks.RecorderCallback;
@@ -16,7 +17,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +28,15 @@ import java.util.Map;
  */
 public class CameraFullscreenRecorder {
 
+    private static final String TAG = "ZiggeoCordovaPlugin";
+
     private static final String OPTION_TIME_LIMIT = "timeLimit";
     private static final String OPTION_AUTO_RECORD = "autoRecord";
     private static final String OPTION_CAMERA_FACING = "facing";
     private static final String OPTION_MANUAL_SUBMIT = "manualSubmit";
     private static final String OPTION_DISABLE_SWITCH = "disableCameraSwitch";
     private static final String OPTION_START_DELAY = "countdown";       // In seconds
-    private static final String OPTION_EXTRA_DATA = "customData";
+    private static final String OPTION_CUSTOM_DATA = "customData";
     private static final String OPTION_HIDE_CONTROL = "hideControl";
 
     // Keep a reference to these classes for any cleanup and destroying later.
@@ -55,6 +57,8 @@ public class CameraFullscreenRecorder {
         RecorderConfig config = getConfig(options);
 
         ziggeo.setRecorderConfig(config);
+
+        Log.d(TAG, "About to launch Ziggeo camera recorder");
         ziggeo.startCameraRecorder();
     }
 
@@ -125,17 +129,14 @@ public class CameraFullscreenRecorder {
             builder.style(style);
         }
 
-        if (options.has(OPTION_EXTRA_DATA)) {
-            HashMap<String, String> extra = new HashMap<>();
+        HashMap<String, String> extra = new HashMap<>();
 
-            JSONObject customData = (JSONObject) options.get(OPTION_EXTRA_DATA);
-            Iterator<String> iterator = customData.keys();
+        if (options.has(OPTION_CUSTOM_DATA)) {
+            JSONObject customData = (JSONObject) options.get(OPTION_CUSTOM_DATA);
+            extra.put("data", customData.toString());
+        }
 
-            while (iterator.hasNext()) {
-                String name = iterator.next();
-                extra.put(name, customData.get(name).toString());
-            }
-
+        if (extra.size() > 0) {
             builder.extraArgs(extra);
         }
 
