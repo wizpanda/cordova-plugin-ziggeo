@@ -62,6 +62,7 @@ so that developers can pretty much use the same options in their web-apps.
 | `hideControl`    | boolean            | No             | `true` i.e. Visible  | Whether to hide the controls.                 |
 | `manualSubmit`   | boolean            | No             | `true`               | Automatically submits the recording as soon as it stops |
 | `title`          | string             | No             | null                 | The title of the video to set                 |
+| `quality`        | boolean            | No             | `0` - High quality    | The quality of the video. `1` for medium quality. `2` for low quality.                 |
 
 TODO Complete this
 

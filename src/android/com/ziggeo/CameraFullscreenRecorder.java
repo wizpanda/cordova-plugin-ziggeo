@@ -39,6 +39,7 @@ public class CameraFullscreenRecorder {
     private static final String OPTION_CUSTOM_DATA = "customData";
     private static final String OPTION_DATA_TITLE = "title";
     private static final String OPTION_HIDE_CONTROL = "hideControl";
+    private static final String OPTION_QUALITY = "quality";
 
     // Keep a reference to these classes for any cleanup and destroying later.
     private static Ziggeo ziggeo;
@@ -128,6 +129,11 @@ public class CameraFullscreenRecorder {
                     .build();
 
             builder.style(style);
+        }
+
+        if (options.has(OPTION_QUALITY)) {
+            Integer quality = options.getInt(OPTION_QUALITY);
+            builder.quality(quality);
         }
 
         HashMap<String, String> extra = new HashMap<>();
