@@ -40,6 +40,7 @@ public class CameraFullscreenRecorder {
     private static final String OPTION_DATA_TITLE = "title";
     private static final String OPTION_HIDE_CONTROL = "hideControl";
     private static final String OPTION_QUALITY = "quality";
+    private static final String OPTION_CONFIRM_STOP = "confirmStopRecording";
 
     // Keep a reference to these classes for any cleanup and destroying later.
     private static Ziggeo ziggeo;
@@ -129,6 +130,10 @@ public class CameraFullscreenRecorder {
                     .build();
 
             builder.style(style);
+        }
+
+        if (options.has(OPTION_CONFIRM_STOP)) {
+            builder.confirmStopRecording(options.getBoolean(OPTION_CONFIRM_STOP));
         }
 
         if (options.has(OPTION_QUALITY)) {
