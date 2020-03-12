@@ -30,10 +30,10 @@ public class CameraFullscreenRecorder {
 
     private static final String TAG = "ZiggeoCordovaPlugin";
 
-    private static final String OPTION_TIME_LIMIT = "timeLimit";
+    private static final String OPTION_MAX_DURATION = "maxDuration";
     private static final String OPTION_AUTO_RECORD = "autoRecord";
     private static final String OPTION_CAMERA_FACING = "facing";
-    private static final String OPTION_MANUAL_SUBMIT = "manualSubmit";
+    private static final String OPTION_SEND_IMMEDIATELY = "sendImmediately";
     private static final String OPTION_DISABLE_SWITCH = "disableCameraSwitch";
     private static final String OPTION_START_DELAY = "countdown";       // In seconds
     private static final String OPTION_CUSTOM_DATA = "customData";
@@ -104,14 +104,14 @@ public class CameraFullscreenRecorder {
             builder.autostartRecording(options.getBoolean(OPTION_AUTO_RECORD));
         }
 
-        if (options.has(OPTION_TIME_LIMIT)) {
-            builder.maxDuration(options.getInt(OPTION_TIME_LIMIT) * 1000);
+        if (options.has(OPTION_MAX_DURATION)) {
+            builder.maxDuration(options.getInt(OPTION_MAX_DURATION) * 1000);
         }
 
-        if (options.has(OPTION_MANUAL_SUBMIT)) {
-            builder.sendImmediately(!options.getBoolean(OPTION_MANUAL_SUBMIT));
+        if (options.has(OPTION_SEND_IMMEDIATELY)) {
+            builder.sendImmediately(!options.getBoolean(OPTION_SEND_IMMEDIATELY));
         } else {
-            builder.sendImmediately(false);
+            builder.sendImmediately(true);      // It's also true by default in SDK
         }
 
         if (options.has(OPTION_DISABLE_SWITCH)) {

@@ -22,6 +22,11 @@ According to Google or Cordova, a cordova plugin is:
 Based on the detailed discussion about this issue with Cordova, we decided to write this plugin so this plugin provides the integration of
  SDKs using Cordova.
 
+## Request to Ziggeo Team
+
+We hereby request to take over (or fork) this repository and start maintaining yourself so that it can be kept updated and also similar
+ implementation of iOS can be done.
+
 ## Installation
 
 ```bash
@@ -54,28 +59,31 @@ We have tried to match the options with JavaScript SDK https://ziggeo.com/docs/s
 so that developers can pretty much use the same options in their web-apps.
 
 
-| Name             | Type     | Required  | Default              | Description                                   |
-|------------------|----------|-----------|----------------------|-----------------------------------------------|
-| `facing`         | number   | No        | `0` - Back Camera          | Which camera to use, front `1` or back `0`.           |
-| `timeLimit`      | number   | No        | Unlimited            | Maximum time allowed for recording.           |
-| `autoRecord`     | boolean  | No        | `false`              | Should auto start the recording immediately.  |
-| `hideControl`    | boolean  | No        | `true` i.e. Visible  | Whether to hide the controls.                 |
-| `manualSubmit`   | boolean  | No        | `true`               | Automatically submits the recording as soon as it stops |
-| `title`          | string   | No        | null                 | The title of the video to set                 |
-| `quality`        | number   | No        | `0` - High quality    | The quality of the video. `1` for medium quality. `2` for low quality.                 |
-
-TODO Complete this
+| Name              | Type     | Required | Default              | Description                                                             |
+|-------------------|----------|----------|----------------------|-------------------------------------------------------------------------|
+| `facing`          | number   | No       | `0` - Back Camera    | Which camera to use, front `1` or back `0`.                             |
+| `maxDuration`     | number   | No       | Unlimited            | Maximum time allowed for recording.                                     |
+| `quality`         | number   | No       | `0` - High quality   | The quality of the video. `1` for medium quality. `2` for low quality.  |
+| `countdown`       | number   | No       | `3`                  | Countdown to run (in seconds) before starting the recording             |
+| `disableCameraSwitch`| boolean | No     | `false`              | Hide the option to switch the camera                                    |
+| `confirmStopRecording`| boolean | No     | `false`              | Whether to show a dialog before stopping the recording                 |
+| `autoRecord`      | boolean  | No       | `false`              | Should auto start the recording immediately.                            |
+| `hideControl`     | boolean  | No       | `false` i.e. Visible | Whether to hide the controls (like submit button).                      |
+| `sendImmediately` | boolean  | No       | `true`               | Automatically submits the recording as soon as it stops                 |
+| `title`           | string   | No       | null                 | The title of the video to set                                           |
+| `customData`      | object   | No       | null                 | Any custom data to pass                                                 |
 
 ### Usage
 
 ```javascript
 const options = {
     facing: 1,
-    timeLimit: 20,
+    maxDuration: 20,
     autoRecord: true,
-    manualSubmit: false,
+    sendImmediately: false,
     disableCameraSwitch: true,
     countdown: 5,
+    title: 'Tell me about this Cordova plugin written by WizPanda?',
     customData: {
         foo: 'bar'
     }
@@ -99,7 +107,6 @@ This will log the events like:
 00:20:38.369 {ziggeoEvent: "has_camera"}
 00:20:38.561 {ziggeoEvent: "ready_to_record"}
 00:20:38.563 {ziggeoEvent: "countdown"}
-00:20:39.564 {ziggeoEvent: "countdown"}
 00:20:41.565 {ziggeoEvent: "countdown"}
 00:20:42.344 {ziggeoEvent: "recording_started"}
 00:20:42.359 {level: "MODERATE", ziggeoEvent: "microphone_health"}
@@ -117,7 +124,6 @@ This will log the events like:
 00:21:52.173 {ziggeoEvent: "uploaded"}
 00:21:52.873 {videoToken: "510c6104201710e5a211ef3c276c3859", ziggeoEvent: "verified"}
 00:21:52.889 {videoToken: "510c6104201710e5a211ef3c276c3859", ziggeoEvent: "processing"}
-00:22:07.967 {videoToken: "510c6104201710e5a211ef3c276c3859", ziggeoEvent: "processing"}
 00:22:11.167 {videoToken: "510c6104201710e5a211ef3c276c3859", ziggeoEvent: "processing"}
 00:22:13.897 {videoToken: "510c6104201710e5a211ef3c276c3859", ziggeoEvent: "processed"}
 ```
