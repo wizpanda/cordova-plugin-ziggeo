@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.0.5
+
+1. Added feature to set quality of the recording.
+2. Preventing screen lock/sleep when the recorder is running https://github.com/Ziggeo/Android-Client-SDK/issues/28
+3. Added confirmation dialog with Android Back button https://github.com/Ziggeo/Android-Client-SDK/issues/30
+4. Wrong video orientation when front camera is being used https://github.com/Ziggeo/Android-Client-SDK/issues/17
+
 ## 0.0.4
 
 1. Fixed passing the `custom-data` in recorded video. https://github.com/Ziggeo/Android-Client-SDK/issues/29
