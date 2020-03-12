@@ -54,8 +54,9 @@ public class CameraFullscreenRecorder {
     }
 
     public void start(String appToken, JSONObject options) throws JSONException {
-        destroy(null);
-        ziggeo = new Ziggeo(appToken, context);
+        if (ziggeo == null) {
+            ziggeo = new Ziggeo(appToken, context);
+        }
 
         RecorderConfig config = getConfig(options);
 
