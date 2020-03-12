@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.1
+
+1. Fix: Fixed plugin crash after recording is stopped if `autoRecord` is set to `true` https://github.com/Ziggeo/Android-Client-SDK/issues/33
+2. Improvement: Not creating instance of `Ziggeo` if already created to save resources and speed-up performance.
+
 ## 1.0.0
 
 1. Feature: Added option to show a confirmation dialogue before stopping the recording.
