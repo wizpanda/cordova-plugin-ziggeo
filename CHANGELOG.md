@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.0
+
+1. Feature: Added option to show a confirmation dialogue before stopping the recording.
+2. Breaking Change: Renamed option from `manualSubmit` to `sendImmediately`.
+3. Breaking Change: Renamed option from `timeLimit` to `maxDuration`.
+
 ## 0.0.5
 
 1. Added feature to set quality of the recording.
