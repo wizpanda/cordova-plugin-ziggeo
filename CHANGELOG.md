@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.2
+
+1. Fix: Fixed the crash on various Android devices https://github.com/Ziggeo/Android-Client-SDK/issues/26.
+2. Fix: Fixed the crash while switching the camera https://github.com/Ziggeo/Android-Client-SDK/issues/31.
+3. Improvement: Stop & close button not needed with `sendImmediate` is set to true https://github.com/Ziggeo/Android-Client-SDK/issues/32.
+
 ## 1.0.1
 
 1. Fix: Fixed plugin crash after recording is stopped if `autoRecord` is set to `true` https://github.com/Ziggeo/Android-Client-SDK/issues/33
