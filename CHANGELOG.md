@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.3
+
+1. Fix: Trying to fix the crash on a few devices https://github.com/Ziggeo/Android-Client-SDK/issues/26.
+
 ## 1.0.2
 
 1. Fix: Fixed the crash on various Android devices https://github.com/Ziggeo/Android-Client-SDK/issues/26.
